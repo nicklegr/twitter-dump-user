@@ -34,6 +34,8 @@ end
 
 def client.get_all_favorites(user)
   collect_with_max_id do |max_id|
+    sleep 61 # rate limit is 15req / 15min
+
     options = {count: 200}
     options[:max_id] = max_id unless max_id.nil?
     favorites(user, options)
