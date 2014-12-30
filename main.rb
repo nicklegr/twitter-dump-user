@@ -32,14 +32,26 @@ def client.get_all_tweets(user)
   end
 end
 
+def client.get_all_favorites(user)
+  collect_with_max_id do |max_id|
+    options = {count: 200}
+    options[:max_id] = max_id unless max_id.nil?
+    favorites(user, options)
+  end
+end
+
 user = client.user(target).to_hash
 
 statuses = client.get_all_tweets(target)
 statuses.map! { |e| e.to_hash }
 
+favorites = client.get_all_favorites(target)
+favorites.map! { |e| e.to_hash }
+
 data = {
   'user' => user,
   'statuses' => statuses,
+  'favorites' => favorites,
 }
 
 puts data.to_yaml
