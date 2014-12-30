@@ -48,10 +48,18 @@ statuses.map! { |e| e.to_hash }
 favorites = client.get_all_favorites(target)
 favorites.map! { |e| e.to_hash }
 
+friends = client.friends(target, {count: 200, skip_status: true, include_user_entities: true})
+friends = friends.to_a.map { |e| e.to_hash }
+
+followers = client.followers(target, {count: 200, skip_status: true, include_user_entities: true})
+followers = followers.to_a.map { |e| e.to_hash }
+
 data = {
   'user' => user,
   'statuses' => statuses,
   'favorites' => favorites,
+  'friends' => friends,
+  'followers' => followers,
 }
 
 puts data.to_yaml
